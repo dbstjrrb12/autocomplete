@@ -3,14 +3,19 @@ const clearIcon = 'src/assets/icon/clear.svg';
 
 export const AutoComplete = (function () {
   let state = '';
-  let $target = document.createElement('form');
+  const $target = document.createElement('form');
   $target.classList.add('autocomplete');
 
-  function AutoComplete({ $app, initialState }) {
+  function AutoComplete({ $app, initialState, onKeyDown }) {
     $app.appendChild($target);
+
     state = initialState;
+    AutoComplete.prototype.onKeyDown = onKeyDown;
+
     this.render();
   }
+
+  AutoComplete.prototype.onKeyDown = () => {};
 
   AutoComplete.prototype.clearFunc = () => {
     const $inputElement = $target.querySelector('.autoInput');
@@ -41,6 +46,10 @@ export const AutoComplete = (function () {
     $target
       .querySelector('.clear')
       .addEventListener('click', AutoComplete.prototype.clearFunc);
+
+    $target
+      .querySelector('.autoInput')
+      .addEventListener('keydown', AutoComplete.prototype.onKeyDown);
   };
 
   return AutoComplete;
