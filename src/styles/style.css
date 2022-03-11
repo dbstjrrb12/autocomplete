@@ -28,7 +28,6 @@ body {
 }
 
 /* autocomplete */
-
 .autocomplete {
   margin: 20px auto;
   padding: 8px 12px;
@@ -71,6 +70,7 @@ body {
 }
 
 .clear > img {
+  pointer-events: none;
   width: 100%;
   height: 100%;
   filter: invert(81%) sepia(9%) saturate(14%) hue-rotate(349deg) brightness(91%)
