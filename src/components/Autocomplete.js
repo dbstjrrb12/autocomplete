@@ -12,6 +12,13 @@ export const AutoComplete = (function () {
     this.render();
   }
 
+  AutoComplete.prototype.clearFunc = () => {
+    const $inputElement = $target.querySelector('.autoInput');
+
+    $inputElement.value = '';
+    $inputElement.focus();
+  };
+
   AutoComplete.prototype.setState = (newState) => {
     state = newState;
     render();
@@ -21,7 +28,7 @@ export const AutoComplete = (function () {
     $target.innerHTML = `
                         <img class="findIcon" src=${findIcon} alt="돋보기">
                         <label class="a11yhidden" for="autoinput">제목으로 검색</label> 
-                        <input class="autoInput" type="text" id="autoinput" value="" placeholder="제목으로 검색" autocomplete="off"/>
+                        <input class="autoInput" type="text" id="autoinput" placeholder="제목으로 검색" autocomplete="off"/>
                         ${
                           state
                             ? `<button class="clear" type="button">
@@ -30,6 +37,10 @@ export const AutoComplete = (function () {
                             : ''
                         }
                         `;
+
+    $target
+      .querySelector('.clear')
+      .addEventListener('click', AutoComplete.prototype.clearFunc);
   };
 
   return AutoComplete;
