@@ -1,3 +1,5 @@
+const iconPath = 'src/assets/icon/find.svg';
+
 export const AutoComplete = (function () {
   let state = '';
   let $target = document.createElement('form');
@@ -15,7 +17,7 @@ export const AutoComplete = (function () {
 
   AutoComplete.prototype.render = () => {
     $target.innerHTML = `
-                        <img class="findIcon" src="" alt="돋보기">
+                        <img class="findIcon" src=${iconPath} alt="돋보기">
                         <label class="a11yhidden" for="autocomplete">검색창</label> 
                         <input type="text" id="autocomplete" value=""/>
                         ${
