@@ -5,9 +5,11 @@ export const request = async (value) => {
   const requestVal = baseUrl + value;
 
   try {
-    const response = await fetch(requestVal).then((res) => res.json());
-
-    return response;
+    return await fetch(requestVal).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+    });
   } catch {
     console.error('데이터 요청에 실패하였습니다. 다시 시도해주세요');
   }
