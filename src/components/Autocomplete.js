@@ -11,24 +11,29 @@ export const AutoComplete = (function () {
   const $button = document.createElement('button');
   $button.classList.add('clear');
 
-  function AutoComplete({ $container, initialState, onInput, onKeyUp }) {
+  function AutoComplete({
+    $container,
+    initialState,
+    onInput,
+    onKeyUp,
+    onClick,
+  }) {
     $container.appendChild($target);
 
     state = initialState;
     proto.onInput = onInput;
     proto.onKeyUp = onKeyUp;
+    proto.onClick = () => {
+      const $inputElement = $target.querySelector('.autoInput');
+
+      $inputElement.value = '';
+      $inputElement.focus();
+
+      onClick($inputElement.value);
+    };
 
     this.render();
   }
-
-  proto.clearFunc = ({ target }) => {
-    const $inputElement = $target.querySelector('.autoInput');
-
-    $inputElement.value = '';
-    $inputElement.focus();
-
-    $target.removeChild(target);
-  };
 
   proto.setState = (newState) => {
     state = newState;
@@ -46,11 +51,10 @@ export const AutoComplete = (function () {
       ${state ? $button : ''}  
     `;
 
-    $button.addEventListener('click', proto.clearFunc);
     $button.type = 'button';
     $button.innerHTML = `<img src=${clearIcon} alt="입력 내용 삭제" />`;
 
-    // 이벤트 위임
+    $button.addEventListener('click', proto.onClick);
     $target.addEventListener('input', proto.onInput);
     $target.addEventListener('keyup', proto.onKeyUp);
   };

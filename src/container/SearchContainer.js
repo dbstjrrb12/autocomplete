@@ -19,6 +19,9 @@ export const SearchContainer = (function () {
     onInput: debounce((e) => {
       proto.setState(e.target.value);
     }, 200),
+    onClick: (valueInInput) => {
+      proto.setState(valueInInput);
+    },
     onKeyUp: ArrowKeyHandler,
   });
 
