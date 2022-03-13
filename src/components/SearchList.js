@@ -26,7 +26,10 @@ export const SearchList = (function () {
         ${listState
           .map((item) => {
             return `<li data-id=${item.id} tabindex="0" aria-labelledby="listItem">
-                      <div class="listItem" id="listItem">${item.text}</div>
+                      <div class="listItem" id="listItem">
+                        <span class="hashtag">#</span>
+                        <span>${item.text}</span>
+                      </div>
                     </li>`;
           })
           .join('')}
