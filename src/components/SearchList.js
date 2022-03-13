@@ -25,8 +25,8 @@ export const SearchList = (function () {
     $target.innerHTML = `
         ${listState
           .map((item) => {
-            return `<li data-id=${item.id} tabindex="0">
-                      <div class="listItem">${item.text}</div>
+            return `<li data-id=${item.id} tabindex="0" aria-labelledby="listItem">
+                      <div class="listItem" id="listItem">${item.text}</div>
                     </li>`;
           })
           .join('')}
