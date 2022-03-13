@@ -1,12 +1,14 @@
 export const SearchList = (function () {
   const proto = SearchList.prototype;
   const $target = document.createElement('ul');
+  $target.classList.add('list');
+
   let listState = null;
 
-  function SearchList({ $app, initialState }) {
+  function SearchList({ $container, initialState }) {
     listState = initialState;
 
-    $app.appendChild($target);
+    $container.appendChild($target);
     this.render();
   }
 
@@ -17,11 +19,13 @@ export const SearchList = (function () {
   };
 
   proto.render = () => {
+    $target.style.display = listState.length ? 'initial' : 'none';
+
     $target.innerHTML = `
         ${listState
           .map((item) => {
-            return `<li data-id=${item.id}>
-                     <div class="listItem">${item.text}</div>
+            return `<li data-id=${item.id} tabindex="0">
+                      <div class="listItem">${item.text}</div>
                     </li>`;
           })
           .join('')}
