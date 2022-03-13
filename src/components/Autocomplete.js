@@ -11,14 +11,12 @@ export const AutoComplete = (function () {
   const $button = document.createElement('button');
   $button.classList.add('clear');
 
-  function AutoComplete({ $app, initialState, onInput }) {
-    $app.appendChild($target);
+  function AutoComplete({ $container, initialState, onInput, onKeyUp }) {
+    $container.appendChild($target);
 
     state = initialState;
-    proto.onInput = ({ target }) => {
-      onInput();
-      target.value ? proto.setState(true) : proto.setState(false);
-    };
+    proto.onInput = onInput;
+    proto.onKeyUp = onKeyUp;
 
     this.render();
   }
@@ -52,9 +50,9 @@ export const AutoComplete = (function () {
     $button.type = 'button';
     $button.innerHTML = `<img src=${clearIcon} alt="입력 내용 삭제" />`;
 
-    $target
-      .querySelector('.autoInput')
-      .addEventListener('input', proto.onInput);
+    // 이벤트 위임
+    $target.addEventListener('input', proto.onInput);
+    $target.addEventListener('keyup', proto.onKeyUp);
   };
 
   return AutoComplete;

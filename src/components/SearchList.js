@@ -5,8 +5,9 @@ export const SearchList = (function () {
 
   let listState = null;
 
-  function SearchList({ $container, initialState }) {
+  function SearchList({ $container, initialState, onKeyUp }) {
     listState = initialState;
+    proto.onKeyUp = onKeyUp;
 
     $container.appendChild($target);
     this.render();
@@ -30,6 +31,8 @@ export const SearchList = (function () {
           })
           .join('')}
       `;
+
+    $target.addEventListener('keyup', proto.onKeyUp);
   };
 
   return SearchList;
