@@ -110,17 +110,17 @@ body {
   border-radius: var(--border-radius-size);
 }
 
+.list > li:hover,
+.list > li#listItem_selected {
+  background: var(--color-gray-700);
+  outline: none;
+}
+
 .list div {
   display: flex;
   align-items: center;
   height: 100%;
   gap: 10px;
-}
-
-.list > li:hover,
-.list > li:focus {
-  background: var(--color-gray-700);
-  outline: none;
 }
 
 .hashtag {

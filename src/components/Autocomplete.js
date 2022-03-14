@@ -15,14 +15,14 @@ export const AutoComplete = (function () {
     $container,
     initialState,
     onInput,
-    onKeyUp,
+    onKeyDown,
     onClick,
   }) {
     $container.appendChild($target);
 
     state = initialState;
     proto.onInput = onInput;
-    proto.onKeyUp = onKeyUp;
+    proto.onKeyDown = onKeyDown;
     proto.onClick = () => {
       const $inputElement = $target.querySelector('.autoInput');
 
@@ -47,7 +47,7 @@ export const AutoComplete = (function () {
     $target.innerHTML = `
       <img class="findIcon" src=${findIcon} alt="돋보기">
       <label class="a11yhidden" for="autoinput">제목으로 검색</label> 
-      <input class="autoInput" type="text" id="autoinput" placeholder="제목으로 검색" autocomplete="off"/>
+      <input class="autoInput" role="combobox" type="text" id="autoinput" placeholder="제목으로 검색" autocomplete="off" aria-activedescendant="listItem_selected"/>
       ${state ? $button : ''}  
     `;
 
@@ -55,8 +55,12 @@ export const AutoComplete = (function () {
     $button.innerHTML = `<img src=${clearIcon} alt="입력 내용 삭제" />`;
 
     $button.addEventListener('click', proto.onClick);
-    $target.addEventListener('input', proto.onInput);
-    $target.addEventListener('keyup', proto.onKeyUp);
+    $target
+      .querySelector('.autoInput')
+      .addEventListener('input', proto.onInput);
+    $target
+      .querySelector('.autoInput')
+      .addEventListener('keydown', proto.onKeyDown);
   };
 
   return AutoComplete;
