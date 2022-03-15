@@ -32,6 +32,8 @@ const ArrowKeyHandler = (e) => {
       break;
     case 'Up':
     case 'ArrowUp':
+      e.preventDefault();
+
       if (!activeElement) {
         lastElement.id = 'listItem_selected';
         return;
@@ -69,6 +71,15 @@ export const SearchContainer = (function () {
     }, 200),
     onClick: (valueInInput) => {
       proto.setState(valueInInput);
+    },
+    onFocusout: () => {
+      // console.log('hi');
+      searchlist.setState([]);
+    },
+    onFocusIn: ({ target }) => {
+      if (!target.value) return;
+
+      proto.setState(target.value);
     },
     onKeyDown: ArrowKeyHandler,
   });
