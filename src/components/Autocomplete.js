@@ -15,14 +15,18 @@ export const AutoComplete = (function () {
     $container,
     initialState,
     onInput,
-    onKeyDown,
     onClick,
+    onFocusout,
+    onFocusIn,
+    onKeyDown,
   }) {
     $container.appendChild($target);
 
     state = initialState;
     proto.onInput = onInput;
     proto.onKeyDown = onKeyDown;
+    proto.onFocusout = onFocusout;
+    proto.onFocusIn = onFocusIn;
     proto.onClick = () => {
       const $inputElement = $target.querySelector('.autoInput');
 
@@ -55,12 +59,15 @@ export const AutoComplete = (function () {
     $button.innerHTML = `<img src=${clearIcon} alt="입력 내용 삭제" />`;
 
     $button.addEventListener('click', proto.onClick);
+    $target.addEventListener('input', proto.onInput);
+    $target.addEventListener('keydown', proto.onKeyDown);
+
     $target
       .querySelector('.autoInput')
-      .addEventListener('input', proto.onInput);
+      .addEventListener('focusout', proto.onFocusout);
     $target
       .querySelector('.autoInput')
-      .addEventListener('keydown', proto.onKeyDown);
+      .addEventListener('focusin', proto.onFocusIn);
   };
 
   return AutoComplete;
