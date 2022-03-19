@@ -1,3 +1,4 @@
+import { searchResultType } from './../types/index';
 import { AutoComplete, SearchList } from '../components/index.js';
 import { request, debounce } from '../utils/index.js';
 import { initialStateType } from '../types/index';
@@ -108,7 +109,7 @@ export const SearchContainer = (function () {
 
   proto.setState = (valueInInput: string): void => {
     let isValueInInput = valueInInput ? true : false;
-    let list = valueInInput
+    let list: Promise<searchResultType[]> | Promise<[]> = valueInInput
       ? request(valueInInput)
       : new Promise((resolve) => resolve([]));
 

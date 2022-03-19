@@ -1,4 +1,4 @@
-export const debounce = (callback, time) => {
+export const debounce = (callback: Function, time: number) => {
   let timeId = null;
 
   return (event) => {

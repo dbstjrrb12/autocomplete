@@ -1,7 +1,9 @@
+import { searchResultType } from '../types/index';
+
 const baseUrl =
   'https://5qfov74y3c.execute-api.ap-northeast-2.amazonaws.com/web-front/autocomplete?value=';
 
-export const request = async (value) => {
+export const request = async (value: string): Promise<searchResultType[]> => {
   const requestVal = baseUrl + value;
 
   try {
