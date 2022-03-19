@@ -66,6 +66,7 @@ body {
   background: inherit;
   color: var(--color-white);
   font-size: 1rem;
+  outline: none;
 }
 
 .clear {
