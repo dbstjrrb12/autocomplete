@@ -27,7 +27,6 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((res) => {
       if (res) {
-        console.log('cache is working');
         return res;
       } else {
         return fetch(event.request)

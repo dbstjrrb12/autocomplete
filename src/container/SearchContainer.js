@@ -54,7 +54,6 @@ export const SearchContainer = (function () {
           : (lastElement.id = 'listItem_selected');
         break;
       case 'Enter':
-        console.log('enter');
         e.target.value = activeElement.innerText.replace('#', '');
         break;
       default:
