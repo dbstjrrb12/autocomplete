@@ -4,9 +4,10 @@
   "description": "autocomplete with Javascript",
   "main": "index.js",
   "scripts": {
-    "start": "live-server --port=8000"
+    "start": "tsc && live-server --port=8000"
   },
   "dependencies": {
-    "live-server": "^1.2.1"
+    "live-server": "^1.2.1",
+    "typescript": "^4.6.2"
   }
 }
