@@ -1,8 +1,10 @@
+import { AutoCompleteProps, AutoCompleteEventTarget } from '../types/index';
+
 const findIcon = 'src/assets/icon/find.svg';
 const clearIcon = 'src/assets/icon/clear.svg';
 
 export const AutoComplete = (function () {
-  let state = '';
+  let state = false;
 
   const proto = AutoComplete.prototype;
   const $target = document.createElement('form');
@@ -19,24 +21,26 @@ export const AutoComplete = (function () {
     onFocusout,
     onFocusIn,
     onKeyDown,
-  }) {
+  }: AutoCompleteProps): void {
     $container.appendChild($target);
 
     state = initialState;
     proto.onInput = onInput;
     proto.onKeyDown = onKeyDown;
-    proto.onFocusout = ({ target: $inputElement }) => {
+    proto.onFocusout = ({ target: $inputElement }: AutoCompleteEventTarget) => {
       $inputElement.setAttribute('aria-expanded', 'false');
       onFocusout();
     };
-    proto.onFocusIn = ({ target: $inputElement }) => {
+    proto.onFocusIn = ({ target: $inputElement }: AutoCompleteEventTarget) => {
       if (state) {
         $inputElement.setAttribute('aria-expanded', 'true');
       }
-      onFocusIn($inputElement);
+      onFocusIn($inputElement as HTMLInputElement);
     };
     proto.onClick = () => {
-      const $inputElement = $target.querySelector('.autoInput');
+      const $inputElement = $target.querySelector(
+        '.autoInput'
+      ) as HTMLInputElement;
 
       $inputElement.value = '';
       $inputElement.focus();
@@ -45,7 +49,7 @@ export const AutoComplete = (function () {
     this.render();
   }
 
-  proto.setState = (newState) => {
+  proto.setState = (newState: boolean): void => {
     state = newState;
 
     state
@@ -58,7 +62,7 @@ export const AutoComplete = (function () {
       : $inputElement.setAttribute('aria-expanded', 'false');
   };
 
-  proto.render = () => {
+  proto.render = (): void => {
     $target.innerHTML = `
       <img class="findIcon" src=${findIcon} alt="돋보기">
       <label class="a11yhidden" for="autoinput">제목으로 검색</label> 

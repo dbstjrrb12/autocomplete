@@ -1,25 +1,27 @@
+import { searchResultType, SearchListProps } from '../types/index';
+
 export const SearchList = (function () {
   const proto = SearchList.prototype;
   const $target = document.createElement('ul');
   $target.classList.add('list');
   $target.id = 'list';
 
-  let listState = null;
+  let listState: searchResultType[] = null;
 
-  function SearchList({ $container, initialState }) {
+  function SearchList({ $container, initialState }: SearchListProps) {
     listState = initialState;
 
     $container.appendChild($target);
     this.render();
   }
 
-  proto.setState = (newState) => {
+  proto.setState = (newState: searchResultType[]): void => {
     listState = newState;
 
     proto.render();
   };
 
-  proto.render = () => {
+  proto.render = (): void => {
     $target.style.display = listState.length ? 'initial' : 'none';
 
     $target.innerHTML = `
