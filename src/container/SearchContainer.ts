@@ -5,10 +5,10 @@ import { initialStateType } from '../types/index';
 
 export const SearchContainer = (function () {
   const proto = SearchContainer.prototype;
-  const initialState: initialStateType = {
+  const SearchState: initialStateType = {
     inputValue: null,
     isValueInInput: false,
-    list: [],
+    searchResult: [],
   };
 
   const ArrowKeyHandler = (e: KeyboardEvent): void => {
@@ -16,56 +16,56 @@ export const SearchContainer = (function () {
       return;
     }
 
-    const $list = document.querySelector('.list');
-    const listElementNodes: HTMLCollection = $list.children;
+    const $ulList = document.querySelector('.list');
+    const liElementNodes: HTMLCollection = $ulList.children;
 
-    if (!listElementNodes.length) return;
+    if (!liElementNodes.length) return;
 
-    const firstElement = listElementNodes[0];
-    const lastElement = listElementNodes[listElementNodes.length - 1];
-    let activeElement = $list.querySelector('#listItem_selected');
-    let nextElement: HTMLLIElement | undefined = null;
+    const firstLiElement = liElementNodes[0];
+    const lastLiElement = liElementNodes[liElementNodes.length - 1];
+    let activeLiElement = $ulList.querySelector('#listItem_selected');
+    let nextLiElement: HTMLLIElement | undefined = null;
 
     switch (e.key) {
       case 'Down':
       case 'ArrowDown':
-        if (!activeElement) {
-          firstElement.id = 'listItem_selected';
+        if (!activeLiElement) {
+          firstLiElement.id = 'listItem_selected';
           return;
         }
 
-        activeElement.id = '';
-        nextElement = activeElement.nextElementSibling as
+        activeLiElement.id = '';
+        nextLiElement = activeLiElement.nextElementSibling as
           | HTMLLIElement
           | undefined;
 
-        nextElement
-          ? (nextElement.id = 'listItem_selected')
-          : (firstElement.id = 'listItem_selected');
+        nextLiElement
+          ? (nextLiElement.id = 'listItem_selected')
+          : (firstLiElement.id = 'listItem_selected');
         break;
       case 'Up':
       case 'ArrowUp':
         e.preventDefault();
 
-        if (!activeElement) {
-          lastElement.id = 'listItem_selected';
+        if (!activeLiElement) {
+          lastLiElement.id = 'listItem_selected';
           return;
         }
 
-        activeElement.id = '';
-        nextElement = activeElement.previousElementSibling as
+        activeLiElement.id = '';
+        nextLiElement = activeLiElement.previousElementSibling as
           | HTMLLIElement
           | undefined;
 
-        nextElement
-          ? (nextElement.id = 'listItem_selected')
-          : (lastElement.id = 'listItem_selected');
+        nextLiElement
+          ? (nextLiElement.id = 'listItem_selected')
+          : (lastLiElement.id = 'listItem_selected');
         break;
       case 'Enter':
         const inputElement = e.target as HTMLInputElement;
 
         inputElement.value = (
-          activeElement as HTMLInputElement
+          activeLiElement as HTMLInputElement
         ).innerText.replace('#', '');
         break;
       default:
@@ -78,9 +78,9 @@ export const SearchContainer = (function () {
 
   const autocomplete = new AutoComplete({
     $container,
-    initialState: initialState.isValueInInput,
+    initialState: SearchState.isValueInInput,
     onInput: debounce((e) => {
-      if (e.target.value === initialState.inputValue) return;
+      if (e.target.value === SearchState.inputValue) return;
 
       proto.setState(e.target.value);
     }, 200),
@@ -100,7 +100,7 @@ export const SearchContainer = (function () {
 
   const searchlist = new SearchList({
     $container,
-    initialState: initialState.list,
+    initialState: SearchState.searchResult,
   });
 
   function SearchContainer($app: HTMLElement): void {
@@ -109,18 +109,18 @@ export const SearchContainer = (function () {
 
   proto.setState = (valueInInput: string): void => {
     let isValueInInput = valueInInput ? true : false;
-    let list: Promise<searchResultType[]> | Promise<[]> = valueInInput
+    let searchResult: Promise<searchResultType[]> | Promise<[]> = valueInInput
       ? request(valueInInput)
       : new Promise((resolve) => resolve([]));
 
     autocomplete.setState(isValueInInput);
-    list.then((result) => {
+    searchResult.then((result) => {
       searchlist.setState(result);
-      initialState.list = result;
+      SearchState.searchResult = result;
     });
 
-    initialState.isValueInInput = isValueInInput;
-    initialState.inputValue = valueInInput;
+    SearchState.isValueInInput = isValueInInput;
+    SearchState.inputValue = valueInInput;
   };
 
   return SearchContainer;

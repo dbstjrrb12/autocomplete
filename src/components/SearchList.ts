@@ -6,31 +6,31 @@ export const SearchList = (function () {
   $target.classList.add('list');
   $target.id = 'list';
 
-  let listState: searchResultType[] = null;
+  let searchResult: searchResultType[] = null;
 
   function SearchList({ $container, initialState }: SearchListProps) {
-    listState = initialState;
+    searchResult = initialState;
 
     $container.appendChild($target);
     this.render();
   }
 
   proto.setState = (newState: searchResultType[]): void => {
-    listState = newState;
+    searchResult = newState;
 
     proto.render();
   };
 
   proto.render = (): void => {
-    $target.style.display = listState.length ? 'initial' : 'none';
+    $target.style.display = searchResult.length ? 'initial' : 'none';
 
     $target.innerHTML = `
-        ${listState
-          .map((item) => {
+        ${searchResult
+          .map((keyword) => {
             return `<li role="option" aria-labelledby="listItem">
                       <div class="listItem" id="listItem">
                         <span class="hashtag">#</span>
-                        <span>${item.text}</span>
+                        <span>${keyword.text}</span>
                       </div>
                     </li>`;
           })

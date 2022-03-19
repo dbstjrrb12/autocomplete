@@ -4,7 +4,7 @@ const findIcon = 'src/assets/icon/find.svg';
 const clearIcon = 'src/assets/icon/clear.svg';
 
 export const AutoComplete = (function () {
-  let state = false;
+  let isValueInInput = false;
 
   const proto = AutoComplete.prototype;
   const $target = document.createElement('form');
@@ -24,7 +24,7 @@ export const AutoComplete = (function () {
   }: AutoCompleteProps): void {
     $container.appendChild($target);
 
-    state = initialState;
+    isValueInInput = initialState;
     proto.onInput = onInput;
     proto.onKeyDown = onKeyDown;
     proto.onFocusout = ({ target: $inputElement }: AutoCompleteEventTarget) => {
@@ -32,7 +32,7 @@ export const AutoComplete = (function () {
       onFocusout();
     };
     proto.onFocusIn = ({ target: $inputElement }: AutoCompleteEventTarget) => {
-      if (state) {
+      if (isValueInInput) {
         $inputElement.setAttribute('aria-expanded', 'true');
       }
       onFocusIn($inputElement as HTMLInputElement);
@@ -50,14 +50,14 @@ export const AutoComplete = (function () {
   }
 
   proto.setState = (newState: boolean): void => {
-    state = newState;
+    isValueInInput = newState;
 
-    state
+    isValueInInput
       ? !$target.querySelector('.clear') && $target.appendChild($button)
       : $target.removeChild($button);
 
     const $inputElement = $target.querySelector('.autoInput');
-    state
+    isValueInInput
       ? $inputElement.setAttribute('aria-expanded', 'true')
       : $inputElement.setAttribute('aria-expanded', 'false');
   };
@@ -77,7 +77,7 @@ export const AutoComplete = (function () {
         aria-owns="list"
         aria-activedescendant="listItem_selected"
       />
-      ${state ? $button : ''}  
+      ${isValueInInput ? $button : ''}  
     `;
 
     $button.type = 'button';
