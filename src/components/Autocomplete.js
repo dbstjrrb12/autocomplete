@@ -25,17 +25,23 @@ export const AutoComplete = (function () {
     state = initialState;
     proto.onInput = onInput;
     proto.onKeyDown = onKeyDown;
-    proto.onFocusout = onFocusout;
-    proto.onFocusIn = onFocusIn;
+    proto.onFocusout = ({ target: $inputElement }) => {
+      $inputElement.setAttribute('aria-expanded', 'false');
+      onFocusout();
+    };
+    proto.onFocusIn = ({ target: $inputElement }) => {
+      if (state) {
+        $inputElement.setAttribute('aria-expanded', 'true');
+      }
+      onFocusIn($inputElement);
+    };
     proto.onClick = () => {
       const $inputElement = $target.querySelector('.autoInput');
 
       $inputElement.value = '';
       $inputElement.focus();
-
       onClick($inputElement.value);
     };
-
     this.render();
   }
 
@@ -45,13 +51,28 @@ export const AutoComplete = (function () {
     state
       ? !$target.querySelector('.clear') && $target.appendChild($button)
       : $target.removeChild($button);
+
+    const $inputElement = $target.querySelector('.autoInput');
+    state
+      ? $inputElement.setAttribute('aria-expanded', 'true')
+      : $inputElement.setAttribute('aria-expanded', 'false');
   };
 
   proto.render = () => {
     $target.innerHTML = `
       <img class="findIcon" src=${findIcon} alt="돋보기">
       <label class="a11yhidden" for="autoinput">제목으로 검색</label> 
-      <input class="autoInput" role="combobox" type="text" id="autoinput" placeholder="제목으로 검색" autocomplete="off" aria-activedescendant="listItem_selected"/>
+      <input 
+        class="autoInput" 
+        role="combobox" 
+        type="text" 
+        id="autoinput" 
+        placeholder="제목으로 검색" 
+        autocomplete="off" 
+        aria-expanded="false"
+        aria-owns="list"
+        aria-activedescendant="listItem_selected"
+      />
       ${state ? $button : ''}  
     `;
 
@@ -61,6 +82,7 @@ export const AutoComplete = (function () {
     $button.addEventListener('click', proto.onClick);
     $target.addEventListener('input', proto.onInput);
     $target.addEventListener('keydown', proto.onKeyDown);
+    $target.addEventListener('submit', (e) => e.preventDefault());
 
     $target
       .querySelector('.autoInput')
