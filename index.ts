@@ -3,7 +3,7 @@ import App from './src/App/App.js';
 window.addEventListener('DOMContentLoaded', () => {
   new App(document.querySelector('.app'));
 
-  const $list = document.querySelector('.list');
+  const $list: HTMLUListElement = document.querySelector('.list');
   $list.style.display = 'none';
 });
 
